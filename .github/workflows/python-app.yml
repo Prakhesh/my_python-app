@@ -1,11 +1,11 @@
-name: Python CI Pipeline
+name: Python CI/CD with Docker
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  test:
+  build-test-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,3 +25,15 @@ jobs:
       run: |
         export PYTHONPATH=.
         pytest
+
+    - name: Login to Docker Hub
+      run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/python-ci-cd-app:latest .
+
+    - name: Push Docker image to Docker Hub
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/python-ci-cd-app:latest
