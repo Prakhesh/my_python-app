@@ -1,5 +1,6 @@
-def hello():
-    return "Hello, CI/CD!"
+def add(a, b):
+    return a + b
+
 
 if __name__ == "__main__":
-    print(hello())
+    print("Addition Result:", add(2, 3))
